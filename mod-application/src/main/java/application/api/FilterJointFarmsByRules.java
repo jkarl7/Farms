@@ -7,7 +7,7 @@ import lombok.Value;
 import java.util.List;
 import java.util.Map;
 
-public interface FilterJointFieldsByRules extends Usecase<FilterJointFieldsByRules.Input, FilterJointFieldsByRules.Output> {
+public interface FilterJointFarmsByRules extends Usecase<FilterJointFarmsByRules.Input, FilterJointFarmsByRules.Output> {
 
     @Value(staticConstructor = "of")
     class Input {

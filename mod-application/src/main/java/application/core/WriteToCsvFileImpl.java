@@ -58,7 +58,9 @@ class WriteToCsvFileImpl implements WriteToCsvFile {
         for (var farmId : jointAreas.keySet()) {
             input.getInitialCsvFileContent().forEach(item -> {
                 if (item.getId().equals(farmId)) {
-                    item.setJointFarms(jointAreas.get(farmId).stream().map(CsvFileItem::getFarmNo).collect(Collectors.toList()));
+                    item.setJointFarms(jointAreas.get(farmId).stream()
+                            .filter(keyId -> !keyId.getId().equals(item.getId()))
+                            .map(CsvFileItem::getFarmNo).collect(Collectors.toList()));
                 }
             });
         }

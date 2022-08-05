@@ -1,6 +1,6 @@
 package farm;
 
-import application.api.FilterJointFieldsByRules;
+import application.api.FilterJointFarmsByRules;
 import application.api.FindActiveFieldFarms;
 import application.api.FindJointField;
 import application.api.ReadFromFile;
@@ -15,10 +15,11 @@ public class Starter {
     private final ReadFromFile readFromFile;
     private final FindJointField findJointField;
     private final FindActiveFieldFarms findActiveFieldFarms;
-    private final FilterJointFieldsByRules filterJointFieldsByRules;
+    private final FilterJointFarmsByRules filterJointFarmsByRules;
     private final WriteToCsvFile writeToCsvFile;
 
     public void run(String[] args) {
+
         var csvItems = readFromFile.execute(ReadFromFile.Input.of("maaalad.csv")); // get data from CSV file
 
         var activeAreas = findActiveFieldFarms
@@ -30,8 +31,8 @@ public class Starter {
                 .build();
         var jointFarms = findJointField.execute(input);
 
-        var filteredJointFarms = filterJointFieldsByRules
-                .execute(FilterJointFieldsByRules.Input.of(jointFarms.getActiveFarmJointAreas()));
+        var filteredJointFarms = filterJointFarmsByRules
+                .execute(FilterJointFarmsByRules.Input.of(jointFarms.getActiveFarmJointAreas()));
 
         writeToCsvFile.execute(WriteToCsvFile.Input.builder()
                 .activeFarmJointAreas(filteredJointFarms.getFilteredActiveFarmJointAreas())

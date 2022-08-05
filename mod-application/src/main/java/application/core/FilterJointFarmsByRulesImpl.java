@@ -1,6 +1,6 @@
 package application.core;
 
-import application.api.FilterJointFieldsByRules;
+import application.api.FilterJointFarmsByRules;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.util.Map;
  * This component removes all joint areas that has total area size <= 0.3 hectares
  */
 @Component
-class FilterJointFieldsByRulesImpl implements FilterJointFieldsByRules {
+class FilterJointFarmsByRulesImpl implements FilterJointFarmsByRules {
 
     private static final BigDecimal MINIMUM_TOTAL_AREA_SIZE_LIMIT = new BigDecimal("0.3");
 
@@ -22,8 +22,7 @@ class FilterJointFieldsByRulesImpl implements FilterJointFieldsByRules {
     }
 
     private Map<Long, List<CsvFileItem>> filterValuesByTotalArea(Input input) {
-        var filteredMap = input.getActiveFarmJointAreas();
-        var iterator = filteredMap.entrySet().iterator();
+        var iterator = input.getActiveFarmJointAreas().entrySet().iterator();
         while (iterator.hasNext()) {
             var entry = iterator.next().getValue();
             var areaSum = entry.stream()
@@ -33,6 +32,6 @@ class FilterJointFieldsByRulesImpl implements FilterJointFieldsByRules {
                 iterator.remove();
             }
         }
-        return filteredMap;
+        return input.getActiveFarmJointAreas();
     }
 }

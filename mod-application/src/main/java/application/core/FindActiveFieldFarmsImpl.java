@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * This class is responsible finding only active farms within field (field 1, 2 etc). All other farms
+ * that are inactive or do not belong to any field are removed. Simply because it is better to work with data that is necessary
+ */
 @Component
 class FindActiveFieldFarmsImpl implements FindActiveFieldFarms {
 
@@ -43,6 +47,8 @@ class FindActiveFieldFarmsImpl implements FindActiveFieldFarms {
                 .collect(Collectors.toList());
     }
 
+    // We trim off everything that is useless. If active farm is surrounded by a farm that does not belong to field (1, 2) then we
+    // remove it from it's farmNextToCurrentFarm list. Also we remove farms that do belong to field, but are inactive.
     private List<CsvFileItem> getActiveFieldFarms(List<CsvFileItem> allFarmsByFieldNumber, List<Long> farmsWithoutField) {
         var activeList = allFarmsByFieldNumber.stream().filter(CsvFileItem::getIsActive).collect(Collectors.toList());
         allFarmsByFieldNumber.removeAll(activeList);

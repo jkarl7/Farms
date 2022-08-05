@@ -25,12 +25,10 @@ class FindJointFieldImpl implements FindJointField {
                 Queue<CsvFileItem> itemsToBeSearchedNext = new LinkedList<>();
                 itemsToBeSearchedNext.add(item);
                 List<CsvFileItem> jointAreas = new ArrayList<>();
-                // Let's find current's active farm adjacent farms and also sort them by farm number (ascending order)
                 var adjacentFarms = getAdjacentFarms(itemsToBeSearchedNext, activeFarmFields, new ArrayList<>(), jointAreas).stream()
                         .sorted(Comparator.comparing(CsvFileItem::getFarmNo, new FarmNumberComparator())).collect(Collectors.toList());
-                System.out.println("FARMS: " + adjacentFarms);
+                adjacentFarms.add(item);
                 activeFarmJointAreas.put(item.getId(), adjacentFarms);
-                System.out.println("<------------------------------------------------->");
             }
         }
         return Output.of(activeFarmJointAreas);
@@ -38,9 +36,10 @@ class FindJointFieldImpl implements FindJointField {
 
     /**
      * We use recursion to find all connected farms
+     *
      * @param itemsToBeSearchedNext -
-     * @param allActiveFieldFarms - Constant variable that keeps info about all active farms in field (fieldNo 1 for example)
-     * @param idToIgnoreFromSearch - We keep track of farm IDs that have been already processed
+     * @param allActiveFieldFarms   - Constant variable that keeps info about all active farms in field (fieldNo 1 for example)
+     * @param idToIgnoreFromSearch  - We keep track of farm IDs that have been already processed
      * @param jointAreas
      * @return
      */
