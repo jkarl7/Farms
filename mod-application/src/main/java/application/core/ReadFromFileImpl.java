@@ -1,7 +1,7 @@
-package farm.application.core;
+package application.core;
 
+import application.api.ReadFromFile;
 import com.opencsv.bean.CsvToBeanBuilder;
-import farm.application.api.ReadFromFile;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;

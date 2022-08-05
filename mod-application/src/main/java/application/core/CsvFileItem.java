@@ -1,4 +1,4 @@
-package farm.application.core;
+package application.core;
 
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;

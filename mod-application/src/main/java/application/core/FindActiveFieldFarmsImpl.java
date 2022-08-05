@@ -1,6 +1,6 @@
-package farm.application.core;
+package application.core;
 
-import farm.application.api.FindActiveFieldFarms;
+import application.api.FindActiveFieldFarms;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

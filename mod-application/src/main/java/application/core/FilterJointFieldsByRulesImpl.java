@@ -1,6 +1,6 @@
-package farm.application.core;
+package application.core;
 
-import farm.application.api.FilterJointFieldsByRules;
+import application.api.FilterJointFieldsByRules;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

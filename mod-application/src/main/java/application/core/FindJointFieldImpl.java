@@ -1,6 +1,6 @@
-package farm.application.core;
+package application.core;
 
-import farm.application.api.FindJointField;
+import application.api.FindJointField;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

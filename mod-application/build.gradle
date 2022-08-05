@@ -4,8 +4,9 @@ plugins {
     id 'java'
 }
 
-group = 'farm'
-version = '0.0.1-SNAPSHOT'
+
+group 'farm'
+version '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
@@ -20,13 +21,15 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'com.opencsv', name: 'opencsv', version: '5.6'
     implementation 'org.projectlombok:lombok:1.18.18'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    implementation project(':mod-application')
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
 }

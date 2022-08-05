@@ -1,10 +1,10 @@
-package farm.application;
+package application;
 
-import farm.application.api.FilterJointFieldsByRules;
-import farm.application.api.FindActiveFieldFarms;
-import farm.application.api.FindJointField;
-import farm.application.api.ReadFromFile;
-import farm.application.api.WriteToCsvFile;
+import application.api.FilterJointFieldsByRules;
+import application.api.FindActiveFieldFarms;
+import application.api.FindJointField;
+import application.api.ReadFromFile;
+import application.api.WriteToCsvFile;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

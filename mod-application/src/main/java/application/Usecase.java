@@ -1,4 +1,4 @@
-package farm.application;
+package application;
 
 @FunctionalInterface
 public interface Usecase<I, O> {
