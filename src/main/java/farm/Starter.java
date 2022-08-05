@@ -1,4 +1,4 @@
-package application;
+package farm;
 
 import application.api.FilterJointFieldsByRules;
 import application.api.FindActiveFieldFarms;
@@ -19,13 +19,20 @@ public class Starter {
     private final WriteToCsvFile writeToCsvFile;
 
     public void run(String[] args) {
-      //  System.out.println("Input file: " + args[0]);
-
         var csvItems = readFromFile.execute(ReadFromFile.Input.of("maaalad.csv")); // get data from CSV file
+
         var activeAreas = findActiveFieldFarms
                 .execute(FindActiveFieldFarms.Input.of(csvItems.getItems())); // let's get all active farms in fields
-        var jointFarms = findJointField.execute(FindJointField.Input.of(csvItems.getItems(), activeAreas.getActiveFieldFarms()));
-        var filteredJointFarms = filterJointFieldsByRules.execute(FilterJointFieldsByRules.Input.of(jointFarms.getActiveFarmJointAreas()));
+
+        var input = FindJointField.Input.builder()
+                .items(csvItems.getItems())
+                .activeFarmsByFieldNumber(activeAreas.getActiveFieldFarms())
+                .build();
+        var jointFarms = findJointField.execute(input);
+
+        var filteredJointFarms = filterJointFieldsByRules
+                .execute(FilterJointFieldsByRules.Input.of(jointFarms.getActiveFarmJointAreas()));
+
         writeToCsvFile.execute(WriteToCsvFile.Input.builder()
                 .activeFarmJointAreas(filteredJointFarms.getFilteredActiveFarmJointAreas())
                 .initialCsvFileContent(csvItems.getItems())

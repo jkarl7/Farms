@@ -1,12 +1,11 @@
 package farm;
 
-import application.Starter;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "application")
+@SpringBootApplication(scanBasePackages = {"farm", "application"})
 @AllArgsConstructor
 public class FarmsApplication implements CommandLineRunner {
 

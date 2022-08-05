@@ -2,6 +2,7 @@ package application.api;
 
 import application.Usecase;
 import application.core.CsvFileItem;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
 
@@ -11,13 +12,12 @@ import java.util.Map;
 public interface FindJointField extends Usecase<FindJointField.Input, FindJointField.Output> {
 
     @Data
-    @Value(staticConstructor = "of")
+    @Builder
     class Input {
         List<CsvFileItem> items;
         Map<Long, List<CsvFileItem>> activeFarmsByFieldNumber;
     }
 
-    @Data
     @Value(staticConstructor = "of")
     class Output {
         Map<Long, List<CsvFileItem>> activeFarmJointAreas;

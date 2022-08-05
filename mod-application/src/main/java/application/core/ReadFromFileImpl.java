@@ -23,7 +23,7 @@ class ReadFromFileImpl implements ReadFromFile {
                     .withSkipLines(0)
                     .build()
                     .parse();
-            return Output.builder().items(csvFileItems).build();
+            return Output.of(csvFileItems);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
