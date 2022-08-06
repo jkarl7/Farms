@@ -1,3 +1,3 @@
 AS CGI Eesti proovitöö.
 
-Autor: Karl Jürgenson
+Autor: Karl Jürgenson 
