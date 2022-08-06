@@ -25,4 +25,4 @@ Projekt kasutab Spring Boot versioon: 2.7.2
 * Navigeerida projekti juurkaustast build/libs kausta
 * Siia tasub lihtsuse mõttes panna maaalad.csv
 * Käivitada command linelt java -jar Farms-0.0.1-SNAPSHOT.jar (NB! Kui on mingi muu nimega fail, siis kujul java -jar Farms-0.0.1-SNAPSHOT.jar <failinimi>.csv)
-* Samasse kausta, kus asub JAR fail tekib tulemused.csv
+* Samasse kausta, kus asub JAR fail tekib tulemused.csv 
