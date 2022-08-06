@@ -25,7 +25,7 @@ class ReadFromFileImpl implements ReadFromFile {
                     .parse();
             return Output.of(csvFileItems);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("No CSV items found. Missing or wrong file?...Quitting");
         }
         return null;
     }

@@ -30,8 +30,12 @@ class FindJointFieldImpl implements FindJointField {
                 // add initial active farm which is a starting point for out search
                 itemsToBeSearchedNext.add(item);
                 List<CsvFileItem> jointAreas = new ArrayList<>();
+                // Found farms next to each other, also sort them by farm number (26-1, 7, 29-5 etc)
                 var adjacentFarms = getAdjacentFarms(itemsToBeSearchedNext, activeFarmFields, new ArrayList<>(), jointAreas).stream()
-                        .sorted(Comparator.comparing(CsvFileItem::getFarmNo, new CustomStringNumberComparator())).collect(Collectors.toList());
+                        .sorted(Comparator.comparing(CsvFileItem::getFarmNo, new CustomStringNumberComparator()))
+                        .collect(Collectors.toList());
+                // let's also add the farm we searched farms next to it (so it is easier to make certain checks about this connection)
+                // later when printing connected farms, we dont display this one
                 adjacentFarms.add(item);
                 activeFarmJointAreas.put(item.getId(), adjacentFarms);
             }
