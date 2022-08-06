@@ -10,8 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * This class is responsible finding only active farms within field (field 1, 2 etc). All other farms
- * that are inactive or do not belong to any field are removed. Simply because it is better to work with data that is necessary
+ * This class is responsible finding only active farms within field (field 1, 2 etc).
  */
 @Component
 class FindActiveFieldFarmsImpl implements FindActiveFieldFarms {
@@ -27,15 +26,11 @@ class FindActiveFieldFarmsImpl implements FindActiveFieldFarms {
                 .distinct()
                 .collect(Collectors.toList());
 
-        // Find all farms that do not belong to any field (farms that do not belong to field 1, 2)
-        var farmsWithoutField = input.getItems().stream()
-                .filter(item -> item.getFieldNo() == null)
-                .map(CsvFileItem::getId)
-                .collect(Collectors.toList());
-
         for (var fieldNo : allFieldNumbers) {
             var allFarmsByFieldNumber = getFieldFarmsByFieldNumber(input, fieldNo);
-            activeFarms.put(fieldNo, getActiveFieldFarms(allFarmsByFieldNumber, farmsWithoutField));
+            activeFarms.put(fieldNo, allFarmsByFieldNumber.stream()
+                    .filter(CsvFileItem::getIsActive)
+                    .collect(Collectors.toList()));
         }
         return Output.of(activeFarms);
     }
@@ -45,19 +40,5 @@ class FindActiveFieldFarmsImpl implements FindActiveFieldFarms {
                 .stream()
                 .filter(csvFileItem -> Objects.equals(csvFileItem.getFieldNo(), fieldNo))
                 .collect(Collectors.toList());
-    }
-
-    // We trim off everything that is useless. If active farm is surrounded by a farm that does not belong to field (1, 2) then we
-    // remove it from it's farmNextToCurrentFarm list. Also we remove farms that do belong to field, but are inactive.
-    private List<CsvFileItem> getActiveFieldFarms(List<CsvFileItem> allFarmsByFieldNumber, List<Long> farmsWithoutField) {
-        var activeList = allFarmsByFieldNumber.stream().filter(CsvFileItem::getIsActive).collect(Collectors.toList());
-        allFarmsByFieldNumber.removeAll(activeList);
-        var inActiveList = allFarmsByFieldNumber.stream().map(CsvFileItem::getId).collect(Collectors.toList());
-
-        for (var activeItem : activeList) {
-            activeItem.getFieldFarms().removeIf(inActiveList::contains);
-            activeItem.getFarmsNextToCurrentFarm().removeIf(item -> inActiveList.contains(item) || farmsWithoutField.contains(item));
-        }
-        return activeList;
     }
 }

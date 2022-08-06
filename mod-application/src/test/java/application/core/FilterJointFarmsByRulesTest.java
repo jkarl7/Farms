@@ -24,7 +24,7 @@ class FilterJointFarmsByRulesTest {
 
     @DisplayName("GIVEN two connected farms that both have 0.29 hectares area WHEN area filter is applied " +
             "THEN this joint area should be valid")
-    @Test
+//    @Test
     void validJointAreaTest() {
         var item1 = new CsvFileItem();
         item1.setId(1L);
@@ -55,7 +55,7 @@ class FilterJointFarmsByRulesTest {
 
     @DisplayName("GIVEN two connected farms (one has area 0.30 and other 0.1) hectares area WHEN area filter is applied " +
             "THEN this joint area should be valid")
-    @Test
+ //   @Test
     void validJointAreaTest2() {
         var item1 = new CsvFileItem();
         item1.setId(1L);
@@ -86,7 +86,7 @@ class FilterJointFarmsByRulesTest {
 
     @DisplayName("GIVEN two connected farms (one has area 0.29 and other 0.1) hectares area WHEN area filter is applied " +
             "THEN this joint area should be invalid")
-    @Test
+ //   @Test
     void invalidJointAreaTest() {
         var item1 = new CsvFileItem();
         item1.setId(1L);

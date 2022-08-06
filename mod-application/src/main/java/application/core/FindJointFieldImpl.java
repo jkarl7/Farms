@@ -1,6 +1,7 @@
 package application.core;
 
 import application.api.FindJointField;
+import application.core.comparator.CustomStringNumberComparator;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,12 +22,16 @@ class FindJointFieldImpl implements FindJointField {
         Map<Long, List<CsvFileItem>> activeFarmJointAreas = new HashMap<>();
         for (var entry : input.getActiveFarmsByFieldNumber().entrySet()) {
             var activeFarmFields = entry.getValue();
+
+            // Loop over every active farm in field and find which other farms they are connected to
             for (var item : activeFarmFields) {
+                // Keep a queue where we will keep track of the farm for which we look other farms that are next to it
                 Queue<CsvFileItem> itemsToBeSearchedNext = new LinkedList<>();
+                // add initial active farm which is a starting point for out search
                 itemsToBeSearchedNext.add(item);
                 List<CsvFileItem> jointAreas = new ArrayList<>();
                 var adjacentFarms = getAdjacentFarms(itemsToBeSearchedNext, activeFarmFields, new ArrayList<>(), jointAreas).stream()
-                        .sorted(Comparator.comparing(CsvFileItem::getFarmNo, new FarmNumberComparator())).collect(Collectors.toList());
+                        .sorted(Comparator.comparing(CsvFileItem::getFarmNo, new CustomStringNumberComparator())).collect(Collectors.toList());
                 adjacentFarms.add(item);
                 activeFarmJointAreas.put(item.getId(), adjacentFarms);
             }
@@ -37,19 +42,19 @@ class FindJointFieldImpl implements FindJointField {
     /**
      * We use recursion to find all connected farms
      *
-     * @param itemsToBeSearchedNext -
+     * @param itemsToBeSearchedNext - Keeps a queue which farm item will be searched for next
      * @param allActiveFieldFarms   - Constant variable that keeps info about all active farms in field (fieldNo 1 for example)
      * @param idToIgnoreFromSearch  - We keep track of farm IDs that have been already processed
-     * @param jointAreas
-     * @return
+     * @param jointAreas            - List which starts containing farms which form a connection between active farms
+     * @return                      - A complete list of active farms in a field that form a connection between each other
      */
-    private List<CsvFileItem> getAdjacentFarms
-    (
+    private List<CsvFileItem> getAdjacentFarms(
             Queue<CsvFileItem> itemsToBeSearchedNext,
-            List<CsvFileItem> allActiveFieldFarms,
+            final List<CsvFileItem> allActiveFieldFarms,
             List<Long> idToIgnoreFromSearch,
             List<CsvFileItem> jointAreas
     ) {
+
         // Let's keep track of farm ID-s that have been taken into account already
         idToIgnoreFromSearch.add(itemsToBeSearchedNext.element().getId());
         for (var id : itemsToBeSearchedNext.element().getFarmsNextToCurrentFarm()) {
@@ -65,18 +70,5 @@ class FindJointFieldImpl implements FindJointField {
         itemsToBeSearchedNext.poll();
         if (itemsToBeSearchedNext.isEmpty()) return jointAreas;
         return getAdjacentFarms(itemsToBeSearchedNext, allActiveFieldFarms, idToIgnoreFromSearch, jointAreas);
-    }
-
-    class FarmNumberComparator implements Comparator<String> {
-
-        @Override
-        public int compare(String o1, String o2) {
-            if (o2.contains("-")) {
-                return 1;
-            } else if (o1.length() < o2.length()) {
-                return -1;
-            }
-            return 0;
-        }
     }
 }
