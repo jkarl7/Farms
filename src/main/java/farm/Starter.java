@@ -25,15 +25,18 @@ public class Starter {
         var activeAreas = findActiveFieldFarms
                 .execute(FindActiveFieldFarms.Input.of(csvItems.getItems())); // let's get all active farms in fields
 
+        // let's construct input to find connected farms from active farms
         var input = FindJointField.Input.builder()
                 .items(csvItems.getItems())
                 .activeFarmsByFieldNumber(activeAreas.getActiveFieldFarms())
                 .build();
         var jointFarms = findJointField.execute(input);
 
+        // let's remove those connected farms which all have area greater than 0.3
         var filteredJointFarms = filterJointFarmsByRules
                 .execute(FilterJointFarmsByRules.Input.of(jointFarms.getActiveFarmJointAreas()));
 
+        // write result and generate CSV
         writeToCsvFile.execute(WriteToCsvFile.Input.builder()
                 .activeFarmJointAreas(filteredJointFarms.getFilteredActiveFarmJointAreas())
                 .initialCsvFileContent(csvItems.getItems())
